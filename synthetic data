@@ -1,0 +1,21 @@
+def generate_synthetic_data(n=1500):
+    t = np.arange(n)
+    seasonal = 10 * np.sin(2 * np.pi * t / 50)
+    trend = 0.02 * t
+    noise = np.random.normal(0, 2, n)
+    val0 = trend + seasonal + noise
+    val1 = 0.5 * val0 + np.random.normal(0, 1, n)
+    val2 = -0.3 * val0 + np.random.normal(0, 1, n)
+
+    df = pd.DataFrame({
+        "date": pd.date_range(start="2020-01-01", periods=n, freq="D"),
+        "value_0": val0,
+        "value_1": val1,
+        "value_2": val2
+    })
+    df.set_index("date", inplace=True)
+    return df
+
+
+df = generate_synthetic_data()
+df.to_csv("synthetic_data.csv")
